@@ -1,0 +1,96 @@
+include: 
+  - 'templates/terraform.gitlab-ci.yml'
+  - 'templates/deploy-staging.gitlab-ci.yml'
+  - 'templates/deploy-review.gitlab-ci.yml'
+
+
+variables:
+  TF_ROOT: ${CI_PROJECT_DIR}/app
+  CONTAINER_IMAGE: ${IMAGE_NAME}:${CI_COMMIT_REF_NAME}
+  APP_NAME: abdoul-gadirou
+
+
+before_script:
+  - export TF_VAR_AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+  - export TF_VAR_AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+  - export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+  - export TF_VAR_PUBLIC_KEY=${PUBLIC_KEY}
+  
+
+stages:
+  - Build image
+  - Test acceptation
+  - Release image
+  - Deploy review
+  - Stop review
+  - Deploy staging
+  - validate
+  - build
+  - deploy  
+
+.docker_image_template: &docker_image
+  image: docker:latest
+  services:
+    - name : docker:dind
+      alias: docker
+
+build image:
+  <<: *docker_image
+  stage: Build image
+  script:
+    - docker build  -t static-website-example .
+    - docker save static-website-example > static-website-example.tar
+  artifacts:
+     paths:
+       - static-website-example.tar
+
+test acceptation:
+  <<: *docker_image
+  stage: Test acceptation
+  script:
+    - docker load < static-website-example.tar
+    - docker run -d -p 80:80 --name webapp static-website-example
+    - sleep 5
+    - apk --no-cache add curl
+    - curl "http://docker" | grep  "Dimension"
+release image:
+  <<: *docker_image
+  stage: Release image
+  script:
+    - docker load  <  static-website-example.tar
+    - docker tag static-website-example "${IMAGE_NAME}:${CI_COMMIT_REF_NAME}"
+    - docker tag static-website-example "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker push "${IMAGE_NAME}:${CI_COMMIT_REF_NAME}"
+    - docker push "${IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+
+Deploy review:
+  extends: .deploy review
+
+Stop review:
+  extends:  stop review
+
+Deploy staging:
+  extends: .deploy staging
+
+Validate terraform infra:
+  extends: .terraform:validate
+ 
+Build terraform infra:
+  extends: .terraform:build
+  needs: [release image]
+  environment:
+    name: prod
+    action: prepare
+
+Deploy on prod:
+  extends: .terraform:deploy
+  dependencies:
+    - Build terraform infra
+  environment:
+    name: prod
+    url: http://$SERVER_IP
+    action: start
+  only:
+    - master
+  when: manual
