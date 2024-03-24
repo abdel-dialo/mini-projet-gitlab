@@ -12,13 +12,8 @@ variable "instancetype" {
    }
 
  }
-
- variable "security_groups" {
-    type = list
-    default = ["sg_abdoul_ec2"]
-   
- }
-   variable "PUBLIC_KEY" {}
+ variable "security_groups" {}
+ variable "PUBLIC_KEY" {}
   
    
 
