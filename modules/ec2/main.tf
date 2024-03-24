@@ -21,6 +21,8 @@ resource "aws_instance" "my_ec2_instance" {
     type        = "ssh"
     user = "ubuntu"
     private_key = file("${var.PUBLIC_KEY}")
+    
+    
     host        = self.public_ip
     timeout = "1m"
   }

@@ -16,7 +16,7 @@ module "webapp" {
     ec2_common_tag = {
     Name = "ec2-webapp"
      }
-     PUBLIC_KEY=var.PUBLIC_KEY
+    PUBLIC_KEY=var.PUBLIC_KEY
     security_groups = ["${module.sg.mini_projet_sg}"]
     depends_on = [ module.sg ]
 
@@ -47,9 +47,4 @@ resource "aws_eip_association" "eip_assoc" {
   allocation_id = module.eip.aws_eip_id
   depends_on = [ module.webapp,module.eip ] 
 
- provisioner "local-exec" {
-    command = "echo PUBLIC_IP: ${self.public_ip}  > infos_ec2.txt"
-  }
-
 }
-
