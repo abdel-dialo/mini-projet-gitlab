@@ -8,6 +8,9 @@ variables:
   TF_ROOT: ${CI_PROJECT_DIR}/app
   CONTAINER_IMAGE: ${IMAGE_NAME}:${CI_COMMIT_REF_NAME}
   APP_NAME: abdoul-gadirou
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
 
 
 before_script:
@@ -33,7 +36,7 @@ stages:
   services:
     - name : docker:dind
       alias: docker
-
+#test image   
 build image:
   <<: *docker_image
   stage: Build image

@@ -98,7 +98,7 @@ Promotion :BootCamp DevOps 17
   - 'templates/deploy-review.gitlab-ci.yml:qui contient les stages permettant de déployer sur l'environnement staging en utilisant EAZYLABS
   before_script: A ce niveau je déclare les variables d'environnement terraform
    TF_VAR_AWS_ACCESS_KEY_ID,TF_VAR_AWS_SECRET_ACCESS_KEY,TF_VAR_AWS_DEFAULT_REGION,PUBLIC_KEY
-   
+
   - Stages:
      - Build image
      - Test acceptation
@@ -111,10 +111,9 @@ Promotion :BootCamp DevOps 17
      - deploy  
 
 
-
 # Build
- Concernant le build j'ai utilisé le mot clé "Artifact" pour que je 
-  ![Alt text](image-1.png)
+ 
+
 
 
 
