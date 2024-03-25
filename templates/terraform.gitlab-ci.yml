@@ -57,6 +57,7 @@ cache:
 .terraform:build:
   stage: build
   script:
+    - gitlab-terraform init
     - gitlab-terraform plan
     - gitlab-terraform plan-json
   resource_group: ${TF_STATE_NAME}
