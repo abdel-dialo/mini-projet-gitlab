@@ -3,7 +3,6 @@ include:
   - 'templates/deploy-staging.gitlab-ci.yml'
   - 'templates/deploy-review.gitlab-ci.yml'
 
-
 variables:
   TF_ROOT: ${CI_PROJECT_DIR}/app
   CONTAINER_IMAGE: ${IMAGE_NAME}:${CI_COMMIT_REF_NAME}
@@ -12,14 +11,12 @@ variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_DRIVER: overlay2
 
-
 before_script:
   - export TF_VAR_AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
   - export TF_VAR_AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
   - export TF_VAR_AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
   - export TF_VAR_PUBLIC_KEY=${PUBLIC_KEY}
   
-
 stages:
   - Build image
   - Test acceptation
@@ -27,16 +24,18 @@ stages:
   - Deploy review
   - Stop review
   - Deploy staging
+  - Test staging
   - validate
   - build
   - deploy  
+  - Test prod
 
 .docker_image_template: &docker_image
   image: docker:latest
   services:
     - name : docker:dind
       alias: docker
-#test image   
+   
 build image:
   <<: *docker_image
   stage: Build image
@@ -76,15 +75,21 @@ Stop review:
 Deploy staging:
   extends: .deploy staging
 
+Test staging:
+  extends: .test staging
+  needs: [Deploy staging]
+
 Validate terraform infra:
   extends: .terraform:validate
  
 Build terraform infra:
-  extends: .terraform:build
-  needs: [release image]
+  extends: .terraform:build 
+  needs: [Test staging]
   environment:
     name: prod
     action: prepare
+  only:
+    - master
 
 Deploy on prod:
   extends: .terraform:deploy
@@ -97,3 +102,10 @@ Deploy on prod:
   only:
     - master
   when: manual
+
+Test prod:
+   extends: .test prod
+   dependencies:
+    - Deploy on prod
+   only:
+    - master
