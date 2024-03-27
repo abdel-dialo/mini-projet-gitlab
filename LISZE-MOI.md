@@ -19,11 +19,11 @@ Promotion :BootCamp DevOps 17
    - Tester l'image
    - Pousser l'image dans le registre de conteneurs Gitlab
    - Déployer l'application sur :
-        - l'environnement de *staging* à chaque commit pour tester la non régression de l'application
+        - l'environnement de *staging* à chaque commit pour tester la non régression de 
+          l'application
         - l'environnement de *review* à chaque *merge request* 
         - environnement de production une fois qu'on merge sur la branche master
  
-
 **Livrable**
 
 - Dockerfile
@@ -89,6 +89,8 @@ Promotion :BootCamp DevOps 17
     avoir les derniers mises de l'application dans le conteneur après le deploiement 
 
 # Création du pipeline CI/CD
+
+   ![Alt text](images/image-4.png)
 
   Pour mettre en place le CI/CD je dois créer le fichier _.gitlab-ci.yml_ à la racine du projet.
   Le CI/CD sera constitué des etapes suivants:
