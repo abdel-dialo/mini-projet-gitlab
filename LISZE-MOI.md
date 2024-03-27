@@ -12,7 +12,7 @@ Promotion :BootCamp DevOps 17
 
 # Objectif du mini projet
 
-- Faire un fichier Dockerfile à partir duquel on va builder l'image permettra de déployer l'application
+- Faire un fichier Dockerfile à partir duquel on va builder l'image qui permettra de déployer l'application
 - Utiliser Terraform pour provisionner l'infrastructure de production sur laquelle l'application sera déployée
 - Faire une pipeline CI/CD permettant de :
    - Builder l'image qui permettra de déployer l'application
@@ -29,6 +29,9 @@ Promotion :BootCamp DevOps 17
 - Dockerfile
 - Modules terraform (dossier app et module)
 - Fichier _.gitlab-ci.yml_
+- Fichier /templates/deploy-review.gitlab-ci.yml
+- Fichier /templates/deploy-staging.gitlab-ci.yml
+- Fichier /templates/terraform.gitlab-ci.yml
 - Fichier _LISEZ-MOI.md_
 
 # Infrastructure de production
@@ -112,11 +115,51 @@ Promotion :BootCamp DevOps 17
      - build
      - deploy  
 
-
 # Build
+  Dans le job _Build_ je conteneurise l’application à partir du _Dockerfile_ 
+   ![Alt text](images/image-5.png)
+
+# Test acceptation
+   Dans le job  _Test acceptation_ j'ai testé l'application avant de le pousser dans le registre Gitlab-ci
+   ![Alt text](imges/image-6.png)
+# Release image
+  Une fois que le job de test d'acceptation passe Dans le job _Release image_ je pousse l'image dans le registre Gitlab-ci
+  ![Alt text](images/image-7.png)
+
+# Deploy staging avant merge sur le master 
+
+ ![Alt text](images/image-8.png)
+
+ ![Alt text](images/image-9.png)
+
+ ![Alt text](images/image-10.png)
+
+ # Test staging
+   ![Alt text](images/image-11.png)
+
+
+# Deploy review
+  Cette job n'est executé que lorsqu'on ouvre une merge request ainsi l'application est déployée
+  sur l'environnement de revue 
+  ![Alt text](images/image-13.png)
+
+  ![Alt text](images/image-14.png)
+
+   ![Alt text](images/image-15.png)
+     ![Alt text](image16.png) 
+
+# Stop review
+  Cette job est permet de supprimer l'environnement de review une fois que cette dernière est arrêté.
+
+# Validate terraform infra:
+  Cette job permet de valider la configuration de terraform 
+  ![Alt text](images/image-12.png)
+
+# build ter
+  Cette job permet de générer le fichier _plan_ de terraform elle est executé que sur le master
+
+  
+# deploy
+  Cette job permet de provisionner l'infrastructure (ec2) à partir des modules terraform
+  et de déployer l'application sur cette infrastructure.
  
-
-
-
-
-
