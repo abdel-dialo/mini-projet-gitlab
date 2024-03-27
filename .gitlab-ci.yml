@@ -81,10 +81,11 @@ Test staging:
 
 Validate terraform infra:
   extends: .terraform:validate
+  needs: [Test staging]
  
 Build terraform infra:
   extends: .terraform:build 
-  needs: [Test staging]
+  needs: [Validate terraform infra]
   environment:
     name: prod
     action: prepare
