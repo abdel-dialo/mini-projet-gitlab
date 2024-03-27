@@ -105,7 +105,6 @@ Deploy on prod:
 
 Test prod:
    extends: .test prod
-   dependencies:
-    - Deploy on prod
+   needs: [Deploy on prod]
    only:
     - master
