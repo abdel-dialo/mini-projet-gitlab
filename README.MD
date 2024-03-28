@@ -22,7 +22,7 @@ More info [here](https://html5up.net/license).
 
 **************************************************************************************************
 # Gitlab and Terraform Mini-Project
-
+  
 
 # Application: static-website-Example
 
@@ -50,4 +50,4 @@ Deliverable
 - File _/templates/deploy-review.gitlab-ci.yml_
 - File _/templates/deploy-staging.gitlab-ci.yml_
 - File _/templates/terraform.gitlab-ci.yml_
-- _README.md_ file
+- _LISEZ-MOI.md_ file
