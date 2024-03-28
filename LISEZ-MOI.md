@@ -38,7 +38,7 @@ Promotion :BootCamp DevOps 17
 - Fichier _LISEZ-MOI.md_
 
 # Infrastructure de production
-   Pour provisionner l’infrastructure de j’ai écrit 4 modules terraform et un _main_ dans le dossier _app_
+   Pour provisionner l’infrastructure de production j’ai écrit 4 modules terraform et un _main_ dans le dossier _app_
 
    *1*-Module ec2 
    - Structure de notre module 
