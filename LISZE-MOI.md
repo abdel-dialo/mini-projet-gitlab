@@ -4,7 +4,8 @@ Promotion :BootCamp DevOps 17
 
 # Mini-Projet Gitlab et Terraform
 
-![Alt text](image.png)
+![image](https://github.com/abdel-dialo/mini-projet-gitlab-terraform/assets/58465298/d2613efc-4647-4a7f-91b3-11c1ff139cae)
+
 
 # Application :static-website-Example
 
