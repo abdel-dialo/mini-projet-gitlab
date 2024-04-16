@@ -96,7 +96,7 @@ Promotion :BootCamp DevOps 17
 
  ![Alt text](images/image.png)
 
-# Ecrire du Dockerfile
+# Ecriture du Dockerfile
   Avant d'ajouter le fichier Dockerfile j'ai créer une nouvelle branch _mini-projet-gitblab_ sur laquel je vais travailler.
 
   Dans le fichier Dockerfile (voir Dockerfile):
